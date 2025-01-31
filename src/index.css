@@ -4,6 +4,7 @@ button {
   cursor: pointer;
 }
 
+
 @theme {
   --color-primary-light: #3abff8; /* Sky Blue */
   --color-primary-light-hover: #2ca7e0; /* Sky Blue Hover */

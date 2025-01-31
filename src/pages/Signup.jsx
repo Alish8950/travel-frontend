@@ -1,8 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import { Logo } from "../assets";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { registerUser } from "../services/auth.service";
+import { CustomToast } from "../components";
 
 const Signup = () => {
+  const navigate = useNavigate();
+
+  const [username, setUsername] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const user = {
+      fullName: firstname + " " + lastname,
+      username,
+      email,
+      password,
+    };
+    const response = await registerUser(user);
+    console.log(response.message);
+
+    if (response.statusCode === 200) {
+      CustomToast.SuccessToast("User registered successfully");
+      navigate("/login");
+    }
+  };
+
   return (
     <>
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -13,7 +41,7 @@ const Signup = () => {
           <h2 className="text-2xl font-bold text-center text-gray-900">
             Signup
           </h2>
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label
                 htmlFor="username"
@@ -25,8 +53,9 @@ const Signup = () => {
                 id="username"
                 name="username"
                 type="text"
+                onChange={(e) => setUsername(e.target.value)}
                 autoComplete="username"
-                required
+                // required
                 className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-light focus:border-primary-light sm:text-sm"
               />
             </div>
@@ -42,6 +71,7 @@ const Signup = () => {
                   id="firstname"
                   name="firstname"
                   type="text"
+                  onChange={(e) => setFirstname(e.target.value)}
                   autoComplete="firstname"
                   required
                   className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-light focus:border-primary-light sm:text-sm"
@@ -58,6 +88,7 @@ const Signup = () => {
                   id="lastname"
                   name="lastname"
                   type="text"
+                  onChange={(e) => setLastname(e.target.value)}
                   autoComplete="lastname"
                   required
                   className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-light focus:border-primary-light sm:text-sm"
@@ -75,6 +106,7 @@ const Signup = () => {
                 id="email"
                 name="email"
                 type="email"
+                onChange={(e) => setEmail(e.target.value)}
                 autoComplete="email"
                 required
                 className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-light focus:border-primary-light sm:text-sm"
@@ -87,27 +119,43 @@ const Signup = () => {
               >
                 Password*
               </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-light focus:border-primary-light sm:text-sm"
-              />
+              <div className="relative">
+                <input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-light focus:border-primary-light sm:text-sm"
+                />
+                {showPassword ? (
+                  <span
+                    className="material-symbols-outlined text-gray-700 !text-lg absolute right-[10px] top-[10px] cursor-pointer"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    visibility
+                  </span>
+                ) : (
+                  <span
+                    class="material-symbols-outlined text-gray-700 !text-lg absolute right-[10px] top-[10px] cursor-pointer"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    visibility_off
+                  </span>
+                )}
+              </div>
             </div>
             <div>
               <label
                 htmlFor="password"
                 className="block text-sm font-medium text-gray-700"
               >
-               Confirm Password*
+                Confirm Password*
               </label>
               <input
                 id="password"
                 name="password"
                 type="password"
-                autoComplete="current-password"
                 required
                 className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-light focus:border-primary-light sm:text-sm"
               />
@@ -126,7 +174,7 @@ const Signup = () => {
                 </span>
                 <Link
                   className="font-medium text-primary hover:text-primary-light"
-                  to="/"
+                  to="/login"
                 >
                   Login
                 </Link>
