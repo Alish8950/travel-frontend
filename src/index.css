@@ -1,1 +1,31 @@
 @import "tailwindcss";
+
+button {
+  cursor: pointer;
+}
+
+@theme {
+  --color-primary-light: #3abff8; /* Sky Blue */
+  --color-primary-light-hover: #2ca7e0; /* Sky Blue Hover */
+  --color-primary: #0284c7; /* Ocean Blue */
+  --color-primary-hover: #0369a1; /* Ocean Blue Hover */
+
+  --color-secondary-sand: #f3e8d9; /* Sand Beige */
+  --color-secondary-sand-hover: #e4d6c3; /* Sand Beige Hover */
+  --color-secondary-leaf: #22c55e; /* Leaf Green */
+  --color-secondary-leaf-hover: #16a34a; /* Leaf Green Hover */
+  --color-secondary-earth: #9a3412; /* Earth Brown */
+  --color-secondary-earth-hover: #7b2a0e; /* Earth Brown Hover */
+
+  --color-accent-sunset: #fb923c; /* Sunset Orange */
+  --color-accent-sunset-hover: #f97316; /* Sunset Orange Hover */
+  --color-accent-sunshine: #facc15; /* Sunshine Yellow */
+  --color-accent-sunshine-hover: #eab308; /* Sunshine Yellow Hover */
+  --color-accent-blush: #f9a8d4; /* Blush Pink */
+  --color-accent-blush-hover: #f472b6; /* Blush Pink Hover */
+
+  --color-neutral-light: #faf4f0; /* Light Cream */
+  --color-neutral-light-hover: #f1ebe6; /* Light Cream Hover */
+  --color-neutral-gray: #64748b; /* Stone Gray */
+  --color-neutral-gray-hover: #475569; /* Stone Gray Hover */
+}
