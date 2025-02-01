@@ -3,6 +3,7 @@ import "./App.css";
 import { Outlet } from "react-router-dom";
 import { getCurrentUser } from "./services/auth.service";
 import { UserContext } from "./context/UserContext";
+import Header from "./components/Header";
 
 function App() {
   const { dispatch } = useContext(UserContext);
@@ -26,8 +27,11 @@ function App() {
   }, []);
   return (
     <>
-      <div>
-        <Outlet />
+      <div className="bg-primary-background">
+        <Header />
+        <div className="h-[calc(100vh-80px)]">
+          <Outlet />
+        </div>
       </div>
     </>
   );
