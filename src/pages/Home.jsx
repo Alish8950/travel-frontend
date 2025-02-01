@@ -1,9 +1,32 @@
-import React from 'react'
+import React, { useContext } from "react";
+import { logoutCurrentUser } from "../services/auth.service";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 
 const Home = () => {
-  return (
-    <div className='bg-primary-light'>Home</div>
-  )
-}
+  const navigate = useNavigate();
+  const { dispatch } = useContext(UserContext);
 
-export default Home
+  const logoutUser = async () => {
+    try {
+      const res = await logoutCurrentUser();
+      if (res.statusCode === 200) {
+        localStorage.removeItem("userId");
+        dispatch({ type: "SET_USER", payload: res.data });
+        navigate("/login");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <>
+      <div>
+        
+      </div>
+    </>
+  );
+};
+
+export default Home;

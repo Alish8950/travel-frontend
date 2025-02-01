@@ -1,3 +1,3 @@
-import CustomToast from "./CustomToast";
+import Header from "./Header";
 
-export { CustomToast };
+export { Header };

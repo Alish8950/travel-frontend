@@ -1,20 +1,28 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Logo } from "../assets";
 import { Link, useNavigate } from "react-router-dom";
 import { registerUser } from "../services/auth.service";
-import { CustomToast } from "../components";
+import { UserContext } from "../context/UserContext";
+import CustomToast from "../utils/CustomToast";
 
 const Signup = () => {
   const navigate = useNavigate();
+  // const { dispatch } = useContext(UserContext);
+  const {dispatch} = useContext(UserContext);
 
   const [username, setUsername] = useState("");
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e) => {
+    if (password !== confirmPassword) {
+      CustomToast.ErrorToast("Passwords do not match");
+      return;
+    }
     e.preventDefault();
     const user = {
       fullName: firstname + " " + lastname,
@@ -26,8 +34,16 @@ const Signup = () => {
     console.log(response.message);
 
     if (response.statusCode === 200) {
+      dispatch({ type: "SET_USER", payload: response.data });
       CustomToast.SuccessToast("User registered successfully");
       navigate("/login");
+
+      setUsername("");
+      setFirstname("");
+      setLastname("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
     }
   };
 
@@ -137,7 +153,7 @@ const Signup = () => {
                   </span>
                 ) : (
                   <span
-                    class="material-symbols-outlined text-gray-700 !text-lg absolute right-[10px] top-[10px] cursor-pointer"
+                    className="material-symbols-outlined text-gray-700 !text-lg absolute right-[10px] top-[10px] cursor-pointer"
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     visibility_off
@@ -147,15 +163,16 @@ const Signup = () => {
             </div>
             <div>
               <label
-                htmlFor="password"
+                htmlFor="confirmPassword"
                 className="block text-sm font-medium text-gray-700"
               >
                 Confirm Password*
               </label>
               <input
-                id="password"
-                name="password"
+                id="confirmPassword"
+                name="confirmPassword"
                 type="password"
+                onChange={(e) => setConfirmPassword(e.target.value)}
                 required
                 className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-light focus:border-primary-light sm:text-sm"
               />

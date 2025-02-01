@@ -1,8 +1,43 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import { Logo } from "../assets";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
+import { loginUser } from "../services/auth.service";
 
 const Login = () => {
+  const { dispatch } = useContext(UserContext);
+
+  const navigate = useNavigate();
+
+  const [emailUsername, setEmailUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  const isEmail = emailUsername.includes("@");
+
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      const user = {
+        ...(!isEmail && { username: emailUsername }),
+        ...(isEmail && { emailUsername }),
+        password,
+      };
+
+      const response = await loginUser(user);
+
+      if (response.statusCode === 200) {      
+        console.log( response);
+        localStorage.setItem("userId", response.data.user._id)
+        dispatch({ type: "SET_USER", payload: response.data });
+        console.log(response);
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -13,18 +48,18 @@ const Login = () => {
           <h2 className="text-2xl font-bold text-center text-gray-900">
             Login
           </h2>
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-700"
               >
-                Email address
+                Email/Username
               </label>
               <input
                 id="email"
                 name="email"
-                type="email"
+                onChange={(e) => setEmailUsername(e.target.value)}
                 autoComplete="email"
                 required
                 className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-light focus:border-primary-light sm:text-sm"
@@ -37,14 +72,31 @@ const Login = () => {
               >
                 Password
               </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-light focus:border-primary-light sm:text-sm"
-              />
+              <div className="relative">
+                <input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-light focus:border-primary-light sm:text-sm"
+                />
+                {showPassword ? (
+                  <span
+                    className="material-symbols-outlined text-gray-700 !text-lg absolute right-[10px] top-[10px] cursor-pointer"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    visibility
+                  </span>
+                ) : (
+                  <span
+                    className="material-symbols-outlined text-gray-700 !text-lg absolute right-[10px] top-[10px] cursor-pointer"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    visibility_off
+                  </span>
+                )}
+              </div>
             </div>
             <div className="flex items-center justify-between">
               <div className="flex items-center">
@@ -79,7 +131,7 @@ const Login = () => {
               </button>
               <div className="mt-4">
                 <span className="font-medium text-gray-700">
-                 Do not have an account?{" "}
+                  Do not have an account?{" "}
                 </span>
                 <Link
                   className="font-medium text-primary hover:text-primary-light"
