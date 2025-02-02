@@ -13,6 +13,7 @@ import Home from "./pages/Home.jsx";
 import AuthLayout from "./middleware/authMiddleware.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
+import AllJourneys from "./pages/AllJourneys.jsx";
 
 const router = createBrowserRouter([
   {
@@ -36,11 +37,19 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/",
+        path: "/signup",
         element: (
           <AuthLayout authentication={false}>
             <Signup />
           </AuthLayout>
+        ),
+      },
+      {
+        path: "/all-journeys",
+        element: (
+          <AllJourneys />
+          // <AuthLayout authentication>
+          // </AuthLayout>
         ),
       },
     ],

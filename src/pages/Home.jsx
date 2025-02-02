@@ -5,21 +5,21 @@ import { UserContext } from "../context/UserContext";
 import { HomePen, WelcomeNoteBg } from "../assets";
 
 const Home = () => {
-  const navigate = useNavigate();
-  const { dispatch } = useContext(UserContext);
+  // const navigate = useNavigate();
+  // const { dispatch } = useContext(UserContext);
 
-  const logoutUser = async () => {
-    try {
-      const res = await logoutCurrentUser();
-      if (res.statusCode === 200) {
-        localStorage.removeItem("userId");
-        dispatch({ type: "SET_USER", payload: res.data });
-        navigate("/login");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const logoutUser = async () => {
+  //   try {
+  //     const res = await logoutCurrentUser();
+  //     if (res.statusCode === 200) {
+  //       localStorage.removeItem("userId");
+  //       dispatch({ type: "SET_USER", payload: res.data });
+  //       navigate("/login");
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <>

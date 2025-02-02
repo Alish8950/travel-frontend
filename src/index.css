@@ -17,11 +17,19 @@ img {
 }
 
 .notebook-box-shadow {
-  box-shadow: 4px 4px 4px 4px #0000000D;
+  box-shadow: 4px 4px 4px 4px #0000000d;
+}
+
+.note-box-shadow {
+  box-shadow: 3px 4px 4px 2px #0000000f;
+}
+
+.ind-note-box-shadow {
+  box-shadow: 4px 4px 10px 6px #0000000d;
 }
 
 .notebok-linear-gradient {
-  background: linear-gradient(153.62deg, #301DAD 3.89%, #6048FF 92.46%);
+  background: linear-gradient(153.62deg, #301dad 3.89%, #6048ff 92.46%);
 }
 
 .font-cursive {
@@ -57,4 +65,5 @@ img {
   --color-purple-primary: #1c106b;
 
   --color-gray-shade1: #d9d9d9;
+  --color-gray-shade2: #a1a1a1;
 }
