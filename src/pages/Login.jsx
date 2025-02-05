@@ -3,6 +3,7 @@ import { Logo } from "../assets";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import { loginUser } from "../services/auth.service";
+import CustomToast from "../utils/CustomToast";
 
 const Login = () => {
   const { dispatch } = useContext(UserContext);
@@ -26,9 +27,14 @@ const Login = () => {
 
       const response = await loginUser(user);
 
-      if (response.statusCode === 200) {      
-        console.log( response);
-        localStorage.setItem("userId", response.data.user._id)
+      if (response.status === 404) {
+        CustomToast.ErrorToast("User not registered");
+      }
+      console.log(response);
+
+      if (response.statusCode === 200) {
+        console.log(response);
+        localStorage.setItem("userId", response.data.user._id);
         dispatch({ type: "SET_USER", payload: response.data });
         console.log(response);
         navigate("/");

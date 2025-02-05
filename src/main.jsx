@@ -14,6 +14,7 @@ import AuthLayout from "./middleware/authMiddleware.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import AllJourneys from "./pages/AllJourneys.jsx";
+import AddJourney from "./pages/AddJourney.jsx";
 
 const router = createBrowserRouter([
   {
@@ -48,6 +49,14 @@ const router = createBrowserRouter([
         path: "/all-journeys",
         element: (
           <AllJourneys />
+          // <AuthLayout authentication>
+          // </AuthLayout>
+        ),
+      },
+      {
+        path: "/add-journey",
+        element: (
+          <AddJourney />
           // <AuthLayout authentication>
           // </AuthLayout>
         ),

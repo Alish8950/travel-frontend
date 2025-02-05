@@ -8,7 +8,7 @@ import CustomToast from "../utils/CustomToast";
 const Signup = () => {
   const navigate = useNavigate();
   // const { dispatch } = useContext(UserContext);
-  const {dispatch} = useContext(UserContext);
+  const { dispatch } = useContext(UserContext);
 
   const [username, setUsername] = useState("");
   const [firstname, setFirstname] = useState("");
@@ -19,11 +19,11 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
     if (password !== confirmPassword) {
       CustomToast.ErrorToast("Passwords do not match");
       return;
     }
-    e.preventDefault();
     const user = {
       fullName: firstname + " " + lastname,
       username,
@@ -31,7 +31,6 @@ const Signup = () => {
       password,
     };
     const response = await registerUser(user);
-    console.log(response.message);
 
     if (response.statusCode === 200) {
       dispatch({ type: "SET_USER", payload: response.data });
