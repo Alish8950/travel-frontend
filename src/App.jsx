@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 import "./App.css";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { getCurrentUser } from "./services/auth.service";
 import { UserContext } from "./context/UserContext";
 import Header from "./components/Header";
@@ -8,22 +8,20 @@ import Header from "./components/Header";
 function App() {
   const { dispatch } = useContext(UserContext);
 
-  const getUser = async (localId) => {
+  const getUser = async () => {
     try {
-      const response = await getCurrentUser(localId);
-      if (response.statusCode === 200) {
-        dispatch({ type: "SET_USER", payload: response.data });
+      const res = await getCurrentUser();
+      if (res.statusCode === 200) {
+        dispatch({ type: "SET_USER", payload: res.data });
+        localStorage.setItem("user", JSON.stringify(res.data));
       }
     } catch (error) {
       console.log(error);
     }
   };
+
   useEffect(() => {
-    const localId = localStorage.getItem("userId");
-    if (!localId) {
-      return;
-    }
-    getUser(localId);
+    getUser();
   }, []);
   return (
     <>

@@ -1,4 +1,5 @@
 import axios from "axios";
+import API from "./axiosInstance";
 
 const registerUser = async (user) => {
   try {
@@ -27,17 +28,16 @@ const loginUser = async (user) => {
   }
 };
 
-const getCurrentUser = async (userId) => {
+const getCurrentUser = async () => {
   try {
-    const response = await axios.post(
-      `${import.meta.env.VITE_BASE_URL}/users/current-user`,
-      { userId },
-      {
-        withCredentials: true,
-      }
+    const response = await API.get(
+      `${import.meta.env.VITE_BASE_URL}/users/current-user`
     );
+    
     return response.data;
   } catch (error) {
+    console.log(error);
+    
     return error;
   }
 };

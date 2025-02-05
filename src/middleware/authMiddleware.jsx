@@ -1,27 +1,19 @@
-import React, { useContext } from "react";
-import { useEffect } from "react";
-import { useState } from "react";
-// import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { UserContext } from "../context/UserContext";
+import React from "react";
+import { Navigate } from "react-router-dom";
 
-export default function Protected({ children, authentication = true }) {
-  const navigate = useNavigate();
-  const { state } = useContext(UserContext);
-  const [loader, setLoader] = useState();
-  const [authStatus, setAuthStatus] = useState();
+const PrivateRoute = ({ element }) => {
+  const accessToken = localStorage.getItem("accessToken");
 
-  useEffect(() => {
-    setAuthStatus(state.status);
-  }, [state, navigate]);    
+  // Log for debugging purposes
+  console.log("AccessToken:", accessToken);
 
-  useEffect(() => {
-    if (authentication && authStatus !== authentication) {
-      navigate("/login");
-    } else if (!authentication && authStatus !== authentication) {
-      navigate("/");
-    }
-    setLoader(false);
-  }, [navigate, authStatus, authentication]);
-  return loader ? <h1>...loading</h1> : <>{children}</>;
-}
+  // Redirect to login if no access token is found
+  if (!accessToken) {
+    return <Navigate to="/login" replace />;
+  }
+
+  // If authenticated, render the given element
+  return element;
+};
+
+export default PrivateRoute;

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Logo } from "../assets";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
@@ -6,8 +6,7 @@ import { loginUser } from "../services/auth.service";
 import CustomToast from "../utils/CustomToast";
 
 const Login = () => {
-  const { dispatch } = useContext(UserContext);
-
+  const { dispatch, state } = useContext(UserContext);
   const navigate = useNavigate();
 
   const [emailUsername, setEmailUsername] = useState("");
@@ -24,25 +23,26 @@ const Login = () => {
         ...(isEmail && { emailUsername }),
         password,
       };
-
       const response = await loginUser(user);
 
       if (response.status === 404) {
         CustomToast.ErrorToast("User not registered");
       }
-      console.log(response);
 
       if (response.statusCode === 200) {
-        console.log(response);
-        localStorage.setItem("userId", response.data.user._id);
-        dispatch({ type: "SET_USER", payload: response.data });
-        console.log(response);
+        localStorage.setItem("accessToken", response.data.accessToken);
+        dispatch({ type: "SET_USER", payload: response.data.user });
         navigate("/");
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if(state.user._id) navigate("/")
+    
+  })
 
   return (
     <>

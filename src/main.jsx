@@ -2,19 +2,15 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
-import {
-  BrowserRouter,
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { SnackbarProvider } from "notistack";
 import { UserProvider } from "./context/UserContext.jsx";
 import Home from "./pages/Home.jsx";
-import AuthLayout from "./middleware/authMiddleware.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import AllJourneys from "./pages/AllJourneys.jsx";
 import AddJourney from "./pages/AddJourney.jsx";
+import PrivateRoute from "./middleware/authMiddleware.jsx";
 
 const router = createBrowserRouter([
   {
@@ -23,43 +19,23 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: (
-          <AuthLayout authentication>
-            <Home />
-          </AuthLayout>
-        ),
+        element: <PrivateRoute element={<Home />} />,
       },
       {
         path: "/login",
-        element: (
-          <AuthLayout authentication={false}>
-            <Login />
-          </AuthLayout>
-        ),
+        element: <Login />,
       },
       {
         path: "/signup",
-        element: (
-          <AuthLayout authentication={false}>
-            <Signup />
-          </AuthLayout>
-        ),
+        element: <Signup />,
       },
       {
         path: "/all-journeys",
-        element: (
-          <AllJourneys />
-          // <AuthLayout authentication>
-          // </AuthLayout>
-        ),
+        element: <PrivateRoute element={<AllJourneys />} />,
       },
       {
         path: "/add-journey",
-        element: (
-          <AddJourney />
-          // <AuthLayout authentication>
-          // </AuthLayout>
-        ),
+        element: <PrivateRoute element={<AddJourney />} />,
       },
     ],
   },
